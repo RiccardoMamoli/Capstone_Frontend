@@ -1,0 +1,40 @@
+
+.info-box {
+    background: var(--white); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 8px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.111);
+}
+
+.info-box:hover {
+    cursor: pointer;
+}
+
+.show-icon {
+    transition: all 0.3s ease-in-out;
+    opacity: 0.7;
+}
+
+.show-icon:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.show-icon-rotate {
+    transform: rotate(90deg);
+}
+
+.hidden-text {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: height 0.5s cubic-bezier(0.88, -0.55, 0.27, 1.55) , opacity 0.3s ease-out;
+}
+
+.show-text {
+    height: 80px;
+    opacity: 1;
+    transition: height 0.5s cubic-bezier(0.88, -0.55, 0.27, 1.55), opacity 0.3s ease-in 0.2s;
+}

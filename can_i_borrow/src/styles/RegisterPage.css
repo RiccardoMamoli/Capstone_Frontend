@@ -1,0 +1,14 @@
+.register-box {
+    background-color: var(--white);
+    border-radius: 8px;
+}
+
+.register-form-input {
+    border: 1px solid transparent !important;
+    border-radius: 8px;
+    padding: 6px;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    width: 50%;
+}

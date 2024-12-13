@@ -1,0 +1,99 @@
+.object-box {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.details-object {
+    border-radius: 8px;
+    /* background-color: rgba(219, 219, 219, 0.374); */
+
+}
+
+.location-icon {
+    font-size: 18px;
+    position: absolute;
+    left: -0.9%;
+    color: var(--pinkCIB);
+}
+
+
+.review-icon {
+    font-size: 17px;
+    position: absolute;
+    left: -0.8%;
+    bottom: 14%;
+    color: var(--pinkCIB);
+}
+
+
+.img-fake {
+    width: 100%;
+    height: 240px !important;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.box-img-fake {
+    width: 100%;
+    height: 240px !important;
+
+}
+
+.custom-reserve-button {
+    border-radius: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid transparent;
+    color: var(--white);
+    background-color: var(--pinkCIB);
+}
+
+.user-card-button {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    color: var(--white);
+    background-color: var(--pinkCIB);
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.input-date-booking {
+    border: 2px solid transparent;
+    background-color: var(--greyBack);
+    padding-bottom: 7px;
+    padding-top: 7px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-date-booking:hover {
+    cursor: pointer;
+    border: 2px solid var(--pinkCIB);
+}
+
+.input-date-booking:focus {
+    outline: none;
+}
+
+.custom-backdrop {
+    background-color: rgba(0, 0, 0, 0.961) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+.like-icon {
+    color: var(--pinkCIB);
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+}
+
+.like-icon:hover {
+    cursor: pointer;
+}
