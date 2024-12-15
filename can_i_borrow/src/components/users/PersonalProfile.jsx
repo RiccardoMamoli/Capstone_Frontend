@@ -313,8 +313,8 @@ const PersonalProfile = () => {
 
     return (
         <>
-            <Row className="d-flex h-100 w-100 align-items-start justify-content-center">
-                <Col className="profile-info-box" md={10} lg={9} xl={8}>
+            <Row className="d-flex border h-100 w-100 align-items-start justify-content-center">
+                <Col className="profile-info-box h-100" md={10} lg={9} xl={8}>
                     <Container fluid className="p-3">
                         <Row className="d-flex align-items-center">
                             <Col md={2} lg={2} xl={2} className="p-0 px-2">

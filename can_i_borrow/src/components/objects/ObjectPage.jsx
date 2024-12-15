@@ -125,7 +125,7 @@ const ObjectPage = () => {
 
     return (
         <>
-            <Row className="d-flex align-items-start w-100 justify-content-center">
+            <Row className="d-flex h-100 align-items-start w-100 justify-content-center">
                 <Col className="object-box" style={{ maxHeight: "600px" }} md={10} lg={10} xl={8}>
                     <Container fluid className="p-2 h-100">
                         <Row className="h-100">

@@ -7,14 +7,15 @@ import ObjectList from "./ObjectList";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ButtonDarkLight from "../tools/ButtonDarkLight";
+import AnimatedDashboard from "../tools/AnimatedDashboard";
 
-const HomepageContent = ({selectedTheme, setSelectedTheme, query}) => {
+const HomepageContent = ({ selectedTheme, setSelectedTheme, query }) => {
 
     const [isLogged, setIsLogged] = useState(false)
     const token = useSelector((state) => state.token.token);
 
     useEffect(() => {
-       
+
         if (token || localStorage.getItem('token') || sessionStorage.getItem('token')) {
             setIsLogged(true);
         } else {
@@ -27,13 +28,16 @@ const HomepageContent = ({selectedTheme, setSelectedTheme, query}) => {
 
     return (
         <>
-            <Row className="w-100" style={{ paddingLeft: "27.5px", paddingRight: "27.5px", overflowY: "visible"}}>
-                <Col style={{overflowY: "visible"}} md={3} className="d-flex justify-content-center p-0">
-                    <div style={{overflowY: "visible"}} className="w-100">
+            <Row className="w-100" style={{ paddingLeft: "27.5px", paddingRight: "27.5px", overflowY: "visible" }}>
+                <Col style={{ overflowY: "visible" }} md={3} className="d-flex justify-content-center p-0">
+                    <div style={{ overflowY: "visible" }} className="w-100">
                         <InfoBox />
                         {
                             isLogged ?
-                                (<UserDetails token={token} />)
+                                (
+                                    // (<UserDetails token={token} />
+                                    <AnimatedDashboard token={token} />
+                                )
                                 :
                                 (<LoginBox />)
                         }
