@@ -1,0 +1,39 @@
+.scrolling-words-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scrolling-words-box {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50;
+    width: 100%;
+}
+
+.review-item {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.review-item p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.review-item span {
+    display: block;
+    margin-top: 5px;
+    font-style: italic;
+    color: #888;
+}

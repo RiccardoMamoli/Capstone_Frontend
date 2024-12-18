@@ -118,19 +118,17 @@
 
 .edit-icon:hover {
     cursor: pointer;
-    opacity: 1;
 }
 
 .delete-icon:hover {
     cursor: pointer;
-    opacity: 1;
     color: var(--pinkCIB);
 }
 
 .edit-icon,
 .delete-icon {
-    opacity: 0.4;
     transition: all 0.2s ease-in-out;
+    width: 160px;
 }
 
 
@@ -224,5 +222,15 @@
     padding-top: 8px;
     padding-bottom: 8px;
 
+}
+
+.button-action-obj {
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--pinkCIB);
+    color: var(--white);
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 

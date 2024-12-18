@@ -256,8 +256,8 @@ const FavoritesPage = () => {
 
                 </Modal.Body>
                 <Modal.Footer className="border-0">
-                    <Button variant="secondary" onClick={handleClose}>Annulla</Button>
-                    <Button variant="primary" onClick={() => {
+                    <Button style={{border: "none"}} variant="secondary" onClick={handleClose}>Annulla</Button>
+                    <Button style={{background: "var(--pinkCIB)", border: "none"}} onClick={() => {
                         createPrenotazione();
                         handleClose();
                     }}>Conferma Prenotazione</Button>

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ButtonDarkLight from "../tools/ButtonDarkLight";
 import AnimatedDashboard from "../tools/AnimatedDashboard";
+import ScrollingReview from "../tools/ScrollingReview";
 
 const HomepageContent = ({ selectedTheme, setSelectedTheme, query }) => {
 
@@ -35,8 +36,8 @@ const HomepageContent = ({ selectedTheme, setSelectedTheme, query }) => {
                         {
                             isLogged ?
                                 (
-                                    // (<UserDetails token={token} />
-                                    <AnimatedDashboard token={token} />
+                                    <UserDetails token={token} />
+                                    // <AnimatedDashboard token={token} />
                                 )
                                 :
                                 (<LoginBox />)
@@ -52,6 +53,7 @@ const HomepageContent = ({ selectedTheme, setSelectedTheme, query }) => {
                 </Col>
                 <Col md={3} className="p-0 d-flex flex-column justify-content-between">
                     <ObjectList />
+                    <ScrollingReview />
                 </Col>
             </Row>
         </>

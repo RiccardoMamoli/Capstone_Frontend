@@ -47,7 +47,7 @@ const InfoBox = () => {
                                 </div>
                             </Col>
                             <Col lg={12} className={`${showSecond ? "show-text" : "hidden-text"} w-100 d-flex align-items-center`} style={{ fontWeight: "300" }}>
-                                Così da poter riutilizzare oggetti che abbiamo in casa, favorendo un economica circolare che riduce gli sprechi.
+                                Così da poter riutilizzare oggetti che abbiamo in casa, favorendo un economica circolare che mira a ridurre gli sprechi.
                             </Col>
                         </Row>
                     </Container>

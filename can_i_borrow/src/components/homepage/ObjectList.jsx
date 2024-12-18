@@ -93,7 +93,7 @@ const ObjectList = () => {
                                             sortedObjects.map((oggetto, index) => (
                                                 <Link to={`item/${oggetto.id}`} className="text-decoration-none text-dark" key={index}>
                                                     <div className="p-2 px-3">
-                                                        <Row className="single-stat">
+                                                        <Row className="single-stat py-1">
                                                             <Col lg={9} className="">
                                                                 <p style={{ fontSize: "14px" }}>
                                                                     {oggetto.nomeOggetto} di {oggetto.utente.nomeUtente}

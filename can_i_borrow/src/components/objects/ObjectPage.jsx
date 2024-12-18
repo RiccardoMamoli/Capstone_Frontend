@@ -31,10 +31,13 @@ const ObjectPage = () => {
     const favObjects = useSelector((store) => store.oggetti.favObjects);
     const singleObject = allObjects?.find(oggetto => oggetto.id === parseInt(id))
     const singleFav = favObjects?.find(oggetto => oggetto.id === singleObject.id);
+    const sameUserObjects = allObjects.filter(oggetti => oggetti?.utente?.id === singleObject?.utente?.id && oggetti?.id !== parseInt(id))
+    const filtetSameUserObjects = sameUserObjects.fil
 
     const allPersonalBookings = personalProfile?.id
         ? allBookings.filter(booking => booking.utente.id === personalProfile.id)
         : [];
+
     const specificObjectBooking = allPersonalBookings.filter(booking => booking.oggetto.id === parseInt(id));
 
     const createPrenotazione = () => {
@@ -98,11 +101,6 @@ const ObjectPage = () => {
         }
     };
 
-    useEffect(() => {
-        fetchDates();
-    }, []);
-
-
     const handleClick = async () => {
         handleShow();
         await fetchDates();
@@ -123,10 +121,12 @@ const ObjectPage = () => {
     };
 
 
+
+
     return (
         <>
             <Row className="d-flex h-100 align-items-start w-100 justify-content-center">
-                <Col className="object-box" style={{ maxHeight: "600px" }} md={10} lg={10} xl={8}>
+                <Col className="object-box" style={{ maxHeight: "600px" }} md={10} lg={10} xl={9}>
                     <Container fluid className="p-2 h-100">
                         <Row className="h-100">
                             <Col sm={10} md={10} lg={9} className="p-0 pe-2 h-100">
@@ -244,12 +244,54 @@ const ObjectPage = () => {
                                 </div>
                                 <div style={{ flexGrow: "1" }} className="pt-2">
                                     <div className="details-object p-2 h-100">
-                                        <p> Altri oggetti di questo utente:</p>
+                                        <div>
+                                            <p> Altri oggetti di questo utente:</p>
+                                        </div>
                                         <div>
                                             <Container>
-                                                <Row className="py-2">
 
-                                                </Row>
+                                                {sameUserObjects.length === 0 || sameUserObjects === null ?
+
+
+
+                                                    (
+                                                        <Row className="py-2">
+                                                            <Col className="p-0 py-2" md={12}>
+                                                                <p style={{opacity: "0.5"}}> L'utente non ha altri oggetti al momento.</p>
+                                                            </Col>
+                                                        </Row>
+
+                                                    )
+                                                    :
+                                                    (
+                                                        sameUserObjects.map((obj, i) => (
+                                                            <Link key={i} to={`/homepage/main/item/${obj.id}`} className="text-decoration-none text-dark">
+                                                                <Row className="py-2">
+                                                                    <Col className="p-0" md={4}>
+                                                                        <div className="photo-other-object">
+                                                                            <img alt="user" src={obj?.fotoUrls[0]} />
+                                                                        </div>
+                                                                    </Col>
+                                                                    <Col className="p-0" md={8}>
+                                                                        <div className="h-50 d-flex align-items-end">
+                                                                            <p style={{ fontWeight: "500", fontSize: "14px" }}>
+                                                                                {obj?.nomeOggetto}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="h-50 d-flex align-items-start">
+                                                                            <p style={{ fontSize: "14px" }}>
+                                                                                Costo giornaliero: {obj?.prezzoGiornaliero}€
+                                                                            </p>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            </Link>
+                                                        ))
+                                                    )
+                                                }
+
+
+
                                             </Container>
 
                                         </div>
@@ -338,8 +380,8 @@ const ObjectPage = () => {
                     </form>
                 </Modal.Body>
                 <Modal.Footer className="border-0">
-                    <Button variant="secondary" onClick={handleClose}>Annulla</Button>
-                    <Button variant="primary" onClick={() => {
+                    <Button variant="secondary" style={{ border: "none" }} onClick={handleClose}>Annulla</Button>
+                    <Button style={{ background: "var(--pinkCIB)", border: "none" }} onClick={() => {
                         createPrenotazione();
                         handleClose();
                     }}>Conferma Prenotazione</Button>

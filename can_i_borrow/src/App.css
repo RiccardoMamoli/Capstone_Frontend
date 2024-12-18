@@ -8,6 +8,7 @@
 @import './styles/ObjectPage.css';
 @import './styles/Bookings.css';
 @import './styles/Favorites.css';
+@import './styles/ScrollingText.css';
 
 
 @font-face {

@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BsThreeDots } from "react-icons/bs";
-import { acceptBooking, createNewObject, deleteObject, getBookings, getBookingsIn, getOggetti, modifyObject, rejectBooking } from "../../redux/actions";
+import { acceptBooking, createNewObject, deleteBooking, deleteObject, getBookings, getBookingsIn, getOggetti, modifyObject, rejectBooking } from "../../redux/actions";
 import { FaPlus } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { CiCircleCheck } from "react-icons/ci";
+import FeedbackMessage from "../tools/FeedbackMessage";
 
 const PersonalProfile = () => {
     const navigate = useNavigate();
@@ -19,8 +20,13 @@ const PersonalProfile = () => {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showAcceptModal, setShowAcceptModal] = useState(false)
+    const [showDeleteBooking, setShowDeleteBooking] = useState(false)
+    const [showEditBookingModal, setShowEditBookingModal] = useState(false)
     const [selectedBooking, setSelectedBooking] = useState([]);
+    const [selectedPersonalBooking, setSelectedPersonalBooking] = useState(false);
     const [selectedObject, setSelectedObject] = useState([]);
+    const [feedbackMessage, setFeedbackMessage] = useState(null);
+    const [feedbackType, setFeedbackType] = useState(null);
     const [photos, setPhotos] = useState([null, null, null]);
     const [labels, setLabels] = useState(["I tuoi oggetti", "Prenotazioni effettuate", "Prenotazioni ricevute"]);
 
@@ -127,7 +133,7 @@ const PersonalProfile = () => {
 
     const oggetti = useSelector((store) => store.oggetti.allObjects);
     const oggettiUtente = personalProfile && oggetti
-        ? oggetti.filter(oggettoUtente => oggettoUtente.utente.id === personalProfile.id)
+        ? oggetti.filter(oggettoUtente => oggettoUtente?.utente?.id === personalProfile?.id)
         : [];
 
     if (personalProfile === null) {
@@ -141,6 +147,17 @@ const PersonalProfile = () => {
 
     const handleShowModal = () => {
         setShowCreateModal(true)
+    }
+
+    const handleEditBookingModal = (b) => {
+        setShowEditBookingModal(true)
+        setSelectedPersonalBooking(b)
+    }
+
+    const handleShowDeleteBooking = (b) => {
+        setShowDeleteBooking(true)
+        setSelectedPersonalBooking(b)
+        console.log("Selected personal bookibg:", selectedPersonalBooking)
     }
 
     const handleShowDelete = (obj) => {
@@ -159,6 +176,10 @@ const PersonalProfile = () => {
 
     const handleCloseDelete = () => {
         setShowDeleteModal(false)
+    }
+
+    const handleCloseDeleteBooking = () => {
+        setShowDeleteBooking(false)
     }
 
     const handleCloseCreate = () => {
@@ -270,32 +291,98 @@ const PersonalProfile = () => {
 
 
     const handleCreate = async () => {
-        if (!personalProfile || !personalProfile.id) {
+        if (!personalProfile || !personalProfile?.id) {
             console.error("Errore: personalProfile non definito o id mancante");
+            setFeedbackMessage("Errore: informazioni utente mancanti.");
+            setFeedbackType("error");
+            setTimeout(() => {
+                setFeedbackMessage(null);
+                setFeedbackType(null);
+            }, 3000);
             return;
         }
 
-        const oggetto = {
-            utenteId: personalProfile.id,
-            nomeOggetto: nomeNewOggetto?.trim(),
-            descrizioneOggetto: descrizioneNewOggetto?.trim(),
-            disponibilita: statoNewOgggetto,
-            prezzoGiornaliero: parseInt(prezzoNewOggetto),
-            categorie: categoriaNewOggetto,
-            fotoUrls: await uploadPhotos(photos)
-        };
+        try {
 
-        console.log("Dati oggetto prima del dispatch", oggetto);
+            const oggetto = {
+                utenteId: personalProfile.id,
+                nomeOggetto: nomeNewOggetto?.trim(),
+                descrizioneOggetto: descrizioneNewOggetto?.trim(),
+                disponibilita: statoNewOgggetto,
+                prezzoGiornaliero: parseInt(prezzoNewOggetto, 10),
+                categorie: categoriaNewOggetto,
+                fotoUrls: await uploadPhotos(photos),
+            };
 
-        dispatch(createNewObject(oggetto, token));
-        dispatch(getOggetti());
+            console.log("Dati oggetto prima del dispatch:", oggetto);
+
+
+            await dispatch(createNewObject(oggetto, token));
+            setFeedbackMessage("Oggetto creato con successo!");
+            setFeedbackType("success");
+            await dispatch(getOggetti());
+        } catch (error) {
+            setFeedbackMessage("Errore durante la creazione dell'oggetto.");
+            setFeedbackType("error");
+            console.error("Errore creazione oggetto:", error);
+        } finally {
+            setTimeout(() => {
+                setFeedbackMessage(null);
+                setFeedbackType(null);
+            }, 3000);
+        }
     };
 
 
-    const handleDelete = () => {
-        dispatch(deleteObject(selectedObject.id, token))
-        dispatch(getOggetti());
-    }
+    const handleDeleteBooking = () => {
+        dispatch(deleteBooking(selectedPersonalBooking.id, token))
+            .then(() => {
+                setFeedbackMessage("Prenotazione eliminata con successo!");
+                setFeedbackType("success");
+            })
+            .catch((error) => {
+                setFeedbackMessage("Errore durante l'eliminazione della prenotazione.");
+                setFeedbackType("error");
+                console.error("Errore eliminazione:", error);
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setFeedbackMessage(null);
+                    setFeedbackType(null);
+                }, 3000);
+            });
+    };
+
+
+    const handleDelete = async () => {
+        try {
+            if (!selectedObject?.id) {
+                console.error("Errore: id oggetto non trovato");
+                setFeedbackMessage("Errore: oggetto non selezionato.");
+                setFeedbackType("error");
+                setTimeout(() => {
+                    setFeedbackMessage(null);
+                    setFeedbackType(null);
+                }, 3000);
+                return;
+            }
+
+            await dispatch(deleteObject(selectedObject.id, token));
+
+            setFeedbackMessage("Oggetto eliminato con successo!");
+            setFeedbackType("success");
+            await dispatch(getOggetti());
+        } catch (error) {
+            setFeedbackMessage("Errore durante l'eliminazione dell'oggetto.");
+            setFeedbackType("error");
+            console.error("Errore eliminazione oggetto:", error);
+        } finally {
+            setTimeout(() => {
+                setFeedbackMessage(null);
+                setFeedbackType(null);
+            }, 3000);
+        }
+    };
 
     const handleAcceptBooking = () => {
         setShowAcceptModal(false)
@@ -309,23 +396,33 @@ const PersonalProfile = () => {
         dispatch(getBookingsIn())
     }
 
+    const formatCategory = (c) => {
+        if (c === "ARTICOLI_CASA") {
+            return "ARTICOLI PER LA CASA"
+        } else if (c === "SPORT_TEMPO_LIBERO") {
+            return "SPORT E TEMPO LIBERO"
+        } else {
+            return c
+        }
+    }
+
 
 
     return (
         <>
-            <Row className="d-flex border h-100 w-100 align-items-start justify-content-center">
-                <Col className="profile-info-box h-100" md={10} lg={9} xl={8}>
-                    <Container fluid className="p-3">
+            <Row className="d-flex h-100 w-100 align-items-start justify-content-center">
+                <Col className="profile-info-box h-100" md={10} lg={9} xl={9}>
+                    <Container style={{ fontSize: "15px" }} fluid className="p-3">
                         <Row className="d-flex align-items-center">
                             <Col md={2} lg={2} xl={2} className="p-0 px-2">
                                 <div className="profile-image-box">
-                                    <img src={personalProfile.avatarUtente} alt="profile-image" />
+                                    <img src={personalProfile?.avatarUtente} alt="profile-image" />
                                 </div>
                             </Col>
                             <Col md={10} lg={10} xl={10} className="ps-4">
                                 <div>
                                     <p style={{ fontSize: "30px", fontWeight: "500" }}>
-                                        {personalProfile.usernameUtente}
+                                        {personalProfile?.usernameUtente}
                                     </p>
                                 </div>
                                 <div className="py-2">
@@ -338,7 +435,7 @@ const PersonalProfile = () => {
                                                 <p> Nome: </p>
                                             </Col>
                                             <Col className="p-0" md={10} lg={10}>
-                                                <p> {personalProfile.nomeUtente} </p>
+                                                <p> {personalProfile?.nomeUtente} </p>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -346,7 +443,7 @@ const PersonalProfile = () => {
                                                 <p> Cognome: </p>
                                             </Col>
                                             <Col className="p-0" md={9} lg={9}>
-                                                <p> {personalProfile.cognomeUtente} </p>
+                                                <p> {personalProfile?.cognomeUtente} </p>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -354,7 +451,7 @@ const PersonalProfile = () => {
                                                 <p> Data di nascita: </p>
                                             </Col>
                                             <Col className="p-0" md={10} lg={10}>
-                                                <p> {formatDate(personalProfile.dataNascita)}  </p>
+                                                <p> {formatDate(personalProfile?.dataNascita)}  </p>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -362,7 +459,7 @@ const PersonalProfile = () => {
                                                 <p> Indirizzo: </p>
                                             </Col>
                                             <Col className="p-0" md={9} lg={9}>
-                                                <p> {personalProfile.indirizzoUtente} ({personalProfile.cittaUtente}, {personalProfile.codicePostaleUtente}) </p>
+                                                <p> {personalProfile?.indirizzoUtente} ({personalProfile?.cittaUtente}, {personalProfile?.codicePostaleUtente}) </p>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -370,7 +467,7 @@ const PersonalProfile = () => {
                                                 <p> Stato: </p>
                                             </Col>
                                             <Col className="p-0" md={10} lg={10}>
-                                                <p> {personalProfile.statoUtente} </p>
+                                                <p> {personalProfile?.statoUtente} </p>
                                             </Col>
                                         </Row>
                                     </div>
@@ -441,90 +538,196 @@ const PersonalProfile = () => {
                             style={{
                                 borderTopRightRadius: addClass === 1 || addClass === 0 ? "8px" : "0px",
                                 borderTopLeftRadius: addClass === 2 || addClass === 1 ? "8px" : "0px",
-                                maxHeight: "190px",
+
                                 overflowX: "hidden"
                             }}
                         >
                             {addClass === 0 ? (
-                                oggettiUtente.map((oggetto, index) => (
-                                    <div className="px-2" key={index}>
-                                        <Row className="single-object py-2">
-                                            <Col md={3} lg={3} className="p-0 d-flex align-items-center">
-                                                <div className="px-2" style={{ fontSize: "15px" }}>
-                                                    <p>{oggetto.nomeOggetto}</p>
-                                                </div>
-                                            </Col>
-                                            <Col md={6} lg={6} className="p-0 d-flex justify-content-start align-items-center">
-                                                <div className="px-3 d-flex align-items-center justify-content-center" style={{ fontSize: "15px" }}>
-                                                    <p>{oggetto.descrizioneOggetto}</p>
-                                                </div>
-                                            </Col>
-                                            <Col md={6} lg={2} className="p-0 d-flex align-items-center">
-                                                <div className="px-2 d-flex align-items-center" style={{ fontSize: "15px" }}>
-                                                    <p>{oggetto.disponibilita ? 'Disponibile' : 'Non disponibile'}</p>
-                                                </div>
-                                            </Col>
-                                            <Col className="p-0 d-flex align-items-center justify-content-around" md={1} lg={1}>
-                                                <div className="edit-icon" onClick={() => handleEditModal(oggetto)} >
-                                                    <BsThreeDots />
-                                                </div>
-                                                <div className="delete-icon" style={{ fontSize: "17px" }} onClick={() => handleShowDelete(oggetto)} >
-                                                    <MdOutlineDeleteOutline />
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                ))
+
+                                oggettiUtente === null || oggettiUtente.length === 0 ?
+
+                                    (
+                                        <div className="px-2 py-1">
+                                            <Row>
+                                                <Col className="p-0">
+                                                    <div className="p-2">
+                                                        <p style={{ opacity: "0.6" }}> Non hai ancora caricato nessun oggetto.</p>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    )
+
+                                    :
+
+                                    (
+                                        oggettiUtente.map((oggetto, index) => (
+                                            <div className={`px-1 ${index === oggettiUtente.length - 1 ? "" : "pb-3"}`} key={index}>
+                                                <Row className="single-object p-2">
+                                                    <Col md={1} lg={1} className="p-0 d-flex align-items-center">
+                                                        <div style={{ width: "110px", height: "110px" }}>
+                                                            <img alt="imgProd" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "6px" }} src={oggetto.fotoUrls[0]} />
+                                                        </div>
+                                                    </Col>
+                                                    <Col md={4} lg={4} className="p-0 ps-3">
+                                                        <div className="h-50 d-flex align-items-end">
+                                                            <p style={{ fontSize: "28px", fontWeight: "500" }}>
+                                                                {oggetto.nomeOggetto}
+                                                            </p>
+                                                        </div>
+                                                        <div className="h-50 d-flex align-items-start">
+                                                            <p>
+                                                                {oggetto.descrizioneOggetto}
+                                                            </p>
+                                                        </div>
+                                                    </Col>
+                                                    <Col md={4} lg={4} className="p-0 ps-2" style={{ borderLeft: "1px solid #878787" }}>
+                                                        <div style={{ height: "33.33%", fontSize: "15px" }} className="px-2 d-flex align-items-end">
+                                                            <div className="d-flex align-items-center justify-content-between w-100">
+                                                                <p style={{ opacity: "0.5" }}>
+                                                                    Stato:
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <p>
+                                                                    {oggetto.disponibilita ? 'Disponibile' : 'Non disponibile'}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ height: "33.33%", fontSize: "15px" }} className="px-2 d-flex align-items-center">
+                                                            <div className="d-flex align-items-center justify-content-between w-100">
+                                                                <p style={{ opacity: "0.5" }}>
+                                                                    Prezzo:
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <p>
+                                                                    {oggetto.prezzoGiornaliero}€
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ height: "33.33%", fontSize: "15px" }} v className="px-2 d-flex align-items-start">
+                                                            <div className="d-flex align-items-center justify-content-between w-100">
+                                                                <p style={{ opacity: "0.5" }}>
+                                                                    Categoria:
+                                                                </p>
+                                                            </div>
+                                                            <div style={{ fontSize: "14px" }} className="w-100 d-flex align-items-center justify-content-end">
+                                                                <p>
+                                                                    {formatCategory(oggetto.oggettoCategorie[0].categoria.categoria)}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                    <Col md={3} className="p-0 d-flex align-items-center justify-content-end">
+                                                        <div>
+                                                            <div className="edit-icon h-50 d-flex align-items-end pb-1" onClick={() => handleEditModal(oggetto)} >
+                                                                {/* <BsThreeDots /> */}
+                                                                <button className="button-action-obj"> Modifica oggetto</button>
+                                                            </div>
+                                                            <div className="delete-icon h-50 pt-1" onClick={() => handleShowDelete(oggetto)} >
+                                                                {/* <MdOutlineDeleteOutline /> */}
+                                                                <button className="button-action-obj"> Elimina oggetto</button>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        ))
+                                    )
+
                             ) : addClass === 1 ? (
-                                personalBookings.map((booking, index) => (
 
-                                    <div className="px-2" key={index}>
-                                        <Row className="single-object">
-                                            <Col lg={6} className="p-0 d-flex align-items-center">
-                                                <div className="p-2" style={{ fontSize: "15px" }}>
-                                                    <p> {booking?.oggetto?.nomeOggetto} di {booking?.oggetto?.utente?.usernameUtente}</p>
-                                                </div>
-                                            </Col>
-                                            <Col lg={5} className="p-0 d-flex align-items-center justify-content-end">
-                                                <div className="px-2 w-100 d-flex align-items-center justify-content-end" style={{ fontSize: "15px" }}>
-                                                    <p>
-                                                        {booking?.stato === "IN_ATTESA"
-                                                            ? "Non confermata!"
-                                                            : booking?.stato === "ACCETTATA"
-                                                                ? "Confermata!"
-                                                                : booking?.stato === "RIFIUTATA"
-                                                                    ? "Rifiutata"
-                                                                    : null}
-                                                    </p>
-                                                </div>
-                                            </Col>
-                                            <Col lg={1} className="p-0 d-flex justify-content-end align-items-center">
-                                                <div className="d-fle px-2 align-items-center">
-                                                    <BsThreeDots />
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
 
-                                ))
+                                personalBookings.length === 0 || personalBookings === null ?
+
+                                    (
+                                        <div className="px-2 py-1">
+                                            <Row>
+                                                <Col className="p-0">
+                                                    <div className="p-2">
+                                                        <p style={{ opacity: "0.6" }}> Non hai effettuato ancora nessuna prenotazione.</p>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    )
+
+                                    :
+
+                                    (
+                                        personalBookings.map((booking, index) => (
+
+                                            <div className="px-2 py-1" key={index}>
+                                                <Row className="single-object">
+                                                    <Col md={9} className="p-0 d-flex align-items-center">
+                                                        <div className="p-2" style={{ fontSize: "15px" }}>
+                                                            <p> {booking?.oggetto?.nomeOggetto} di {booking?.oggetto?.utente?.usernameUtente}</p>
+                                                        </div>
+                                                    </Col>
+                                                    <Col md={2} className="p-0 d-flex align-items-center justify-content-end">
+                                                        <div className="px-2 w-100 d-flex align-items-center justify-content-end" style={{ fontSize: "15px" }}>
+                                                            <p style={{ opacity: "0.6" }}>
+                                                                {booking?.stato === "IN_ATTESA"
+                                                                    ? "Non confermata!"
+                                                                    : booking?.stato === "ACCETTATA"
+                                                                        ? "Confermata!"
+                                                                        : booking?.stato === "RIFIUTATA"
+                                                                            ? "Rifiutata"
+                                                                            : null}
+                                                            </p>
+                                                        </div>
+                                                    </Col>
+                                                    <Col className="p-0 d-flex align-items-center  justify-content-end" md={1}>
+                                                        <div style={{ borderLeft: "1px solid #878787" }} className="edit-icon ps-3 pe-1" onClick={() => handleEditBookingModal(booking)} >
+                                                            <BsThreeDots />
+                                                        </div>
+                                                        <div className="delete-icon ps-2" style={{ fontSize: "17px" }} onClick={() => handleShowDeleteBooking(booking)} >
+                                                            <MdOutlineDeleteOutline />
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+
+                                        ))
+                                    )
                             ) : (
 
-                                bookingsIn.map((book, i) => (
-                                    <div className="px-2" key={i} onClick={() => handleOpenAcceptBooking(book)}>
-                                        <Row className="single-object">
-                                            <Col md={10} className="p-0 d-flex align-items-center">
-                                                <div className="p-2" style={{ fontSize: "15px" }}>
-                                                    <p> {book?.utente?.usernameUtente} vorrebbe prendere in prestito il tuo oggetto <span style={{ fontWeight: "500" }}>{book.oggetto.nomeOggetto}</span> per {book.durataPrenotazione} {book.durataPrenotazione > 1 ? "giorni" : "giorno"}.  </p>
-                                                </div>
-                                            </Col>
-                                            <Col md={2} className="p-0 d-flex align-items-center">
-                                                <div className="p-2" style={{ fontSize: "15px" }}>
-                                                    <p style={{ opacity: "0.6" }}> {book.stato === "IN_ATTESA" ? "Da confermare" : "Confermata"} </p>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                ))
+
+                                bookingsIn.length === 0 || bookingsIn === null ?
+
+                                    (
+                                        <div className="px-2 py-1">
+                                            <Row>
+                                                <Col className="p-0">
+                                                    <div className="p-2">
+                                                        <p style={{ opacity: "0.6" }}> Non hai ricevuto ancora nessuna prenotazione.</p>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    )
+
+                                    :
+
+                                    (
+                                        bookingsIn.map((book, i) => (
+                                            <div className="px-2 py-1" key={i} onClick={() => handleOpenAcceptBooking(book)}>
+                                                <Row className="single-object">
+                                                    <Col md={9} className="p-0 d-flex align-items-center">
+                                                        <div className="p-2" style={{ fontSize: "15px" }}>
+                                                            <p> {book?.utente?.usernameUtente} vorrebbe prendere in prestito il tuo oggetto <span style={{ fontWeight: "500" }}>{book.oggetto.nomeOggetto}</span> per {book.durataPrenotazione} {book.durataPrenotazione > 1 ? "giorni" : "giorno"}.  </p>
+                                                        </div>
+                                                    </Col>
+                                                    <Col md={3} className="p-0 d-flex align-items-center justify-content-end">
+                                                        <div className="p-2" style={{ fontSize: "15px" }}>
+                                                            <p style={{ opacity: "0.6" }}> {book.stato === "IN_ATTESA" ? "Da confermare" : "Hai accettato la prenotazione!"} </p>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        ))
+                                    )
 
                             )}
                         </Container>
@@ -641,7 +844,6 @@ const PersonalProfile = () => {
                     }}> Conferma modifiche</button>
                 </Modal.Footer>
             </Modal >
-
 
             {/* MODALE CREA */}
 
@@ -812,11 +1014,32 @@ const PersonalProfile = () => {
                 </Modal.Footer>
             </Modal >
 
+            {/* MODALE ELIMINA PRENOTAZIONE */}
+
+            <Modal show={showDeleteBooking} onHide={handleCloseDeleteBooking} backdropClassName=" custom-backdrop" centered>
+                <Modal.Header className="border-0" closeButton>
+                    <Modal.Title> Sei sicuro di voler procedere?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p> Stai per eliminare la seguente prenotazione: <span style={{ fontWeight: "500" }}> {selectedPersonalBooking?.oggetto?.nomeOggetto}</span>. L'azione è irreversibile!</p>
+                    <div>
+                        {selectedPersonalBooking?.oggetto?.nomeOggetto}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer className="border-0">
+                    <Button variant="secondary" onClick={handleCloseDelete}>Annulla</Button>
+                    <button className="edit-object-button" onClick={() => {
+                        handleDeleteBooking();
+                        handleCloseDeleteBooking();
+                    }}> Elimina prenotazione</button>
+                </Modal.Footer>
+            </Modal >
+
             {/* MODALE ACCETTA PRENOTAZIONI */}
 
             <Modal show={showAcceptModal} onHide={handleCloseAccept} backdropClassName=" custom-backdrop" centered size={"lg"}>
                 <Modal.Header className="border-0" closeButton>
-                    <Modal.Title> Scheda prenotazione</Modal.Title>
+                    <Modal.Title> Riepilogo prenotazione</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="pt-0 pb-3">
                     <Container fluid>
@@ -912,6 +1135,12 @@ const PersonalProfile = () => {
                     </Container>
                 </Modal.Body>
             </Modal >
+
+            <FeedbackMessage
+                message={feedbackMessage}
+                type={feedbackType}
+                onClose={() => setFeedbackMessage(null)}
+            />
         </>
     );
 };
