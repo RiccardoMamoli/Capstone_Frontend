@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+Panoramica
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Benvenuto su "Can I Borrow"! Questa applicazione consente agli utenti di prendere in prestito e prestare oggetti di uso comune a un prezzo giornaliero, favorendo un'economia circolare e riducendo gli sprechi.
 
-## Available Scripts
+Funzionalità
 
-In the project directory, you can run:
+Prendi in prestito oggetti: Sfoglia e noleggia gli oggetti di cui hai bisogno a un costo giornaliero stabilito dal prestatore.
 
-### `npm start`
+Presta oggetti: Pubblica i tuoi oggetti inutilizzati e guadagna denaro noleggiandoli ad altri.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Profili utente: Gestisci i tuoi oggetti e noleggi tramite una dashboard personalizzata.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Transazioni sicure: Garantisci un processo di scambio fluido con strumenti di prenotazione e comunicazione integrati.
 
-### `npm test`
+Focus eco-sostenibile: Partecipa alla riduzione della sovrapproduzione e degli sprechi riutilizzando le risorse.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+Utilizzo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Prendere in prestito un oggetto
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Sfoglia gli oggetti disponibili nella homepage.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Seleziona un oggetto per visualizzarne i dettagli, incluso il prezzo giornaliero di noleggio.
 
-### `npm run eject`
+Clicca su "Prenota ora" per riservare l'oggetto e procedere con il pagamento.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Prestare un oggetto
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Vai sul tuo profilo e clicca su "Pubblica un oggetto."
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Compila i dettagli del tuo oggetto, inclusi foto, descrizione e prezzo giornaliero.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Pubblica l'annuncio per renderlo disponibile agli altri.
 
-## Learn More
+Gestione del tuo account
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Visualizza i tuoi noleggi e prenotazioni attive nella dashboard.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Aggiorna le informazioni del tuo profilo e le preferenze.
 
-### Code Splitting
+Tecnologie Utilizzate
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Frontend: React.js, Framer Motion (per animazioni), Bootstrap (per lo stile), Mapbox(per la mappa).
 
-### Analyzing the Bundle Size
+Backend: Java, Springboot.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+State Management: Redux (per la gestione dello stato dell'applicazione).
 
-### Making a Progressive Web App
+Routing: React Router (per la navigazione).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Grazie per aver utilizzato la nostra piattaforma e per contribuire a un futuro sostenibile!
 
-### Advanced Configuration
+Link alla repository backend: https://github.com/RiccardoMamoli/Capostone_Backend.git
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
