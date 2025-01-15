@@ -4,7 +4,7 @@ import omino from '../../assets/logos/LogoScontornato-remove-background.com.png'
 import { useSelector } from 'react-redux';
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { createRoot } from 'react-dom/client';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CustomMapbox = ({ query }) => {
     const mapRef = useRef(null);
@@ -25,7 +25,6 @@ const CustomMapbox = ({ query }) => {
             return markersArray; 
         }
 
-        // Filtro in base alla query
         return markersArray.filter((oggetto) => 
             oggetto.nomeOggetto.toLowerCase().includes(query.toLowerCase()) || 
             oggetto.descrizioneOggetto.toLowerCase().includes(query.toLowerCase())
