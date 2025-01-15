@@ -1,6 +1,5 @@
 import { IoSunny } from "react-icons/io5";
 import { IoMdMoon } from "react-icons/io";
-import { Row } from "react-bootstrap";
 
 
 const ButtonDarkLight = ({ selectedTheme, setSelectedTheme }) => {

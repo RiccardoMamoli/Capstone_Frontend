@@ -84,150 +84,75 @@ const ModalBookings = ({ selectedObject, showModal, setShowModal }) => {
 
     return (
         <>
-            {/* <Modal show={showModal} onHide={handleClose} backdropClassName="custom-backdrop" centered>
+            <Modal show={showModal} onHide={handleClose} backdropClassName="custom-backdrop" centered>
                 <Modal.Header className="border-0" closeButton>
                     <Modal.Title>
-                        {
-                            selectedObject.disponibilita = true ?
-                                (<p>
-                                    Ci sei quasi!
-                                </p>) :
-                                (<p>
-                                    Peccato!
-                                </p>)
-                        }
+                        {singleObject.disponibilita ? <p>Ci sei quasi!</p> : <p>Peccato!</p>}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {
-                        singleObject ?
-                            (
-                                <form>
-                                    <p>Hai scelto <strong>{singleObject.nomeOggetto}</strong> di {singleObject.utente.usernameUtente}!</p>
-                                    <p>Quando ti servirebbe?</p>
+                    <form>
+                        {singleObject.disponibilita ? (
+                            <>
+                                <p>Hai scelto <strong>{singleObject.nomeOggetto}</strong> di {singleObject.utente.usernameUtente}!</p>
+                                <p>Quando ti servirebbe?</p>
+                            </>
+                        ) : (
+                            <>
+                                <p>Hai scelto <strong>{singleObject.nomeOggetto}</strong> di {singleObject.utente.usernameUtente} ma non è al momento disponibile!</p>
+                                <p>Puoi scegliere una data libera tra queste!</p>
+                            </>
+                        )}
 
-                                    <div className="d-flex align-items-center justify-content-between py-2">
-                                        <div className="d-flex align-items-center">
-                                            <p className="me-2">dal:</p>
-                                            <DatePicker
-                                                excludeDates={bookedDates}
-                                                selected={selectedStartDate}
-                                                onChange={(date) => setSelectedStartDate(date)}
-                                                dateFormat="yyyy-MM-dd"
-                                                minDate={new Date()}
-                                                className="input-date-booking"
-                                            />
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                            <p className="me-2">al:</p>
-                                            <DatePicker
-                                                excludeDates={bookedDates}
-                                                selected={selectedEndDate}
-                                                onChange={(date) => setSelectedEndDate(date)}
-                                                dateFormat="yyyy-MM-dd"
-                                                minDate={new Date()}
-                                                className="input-date-booking"
-                                            />
-                                        </div>
-                                    </div>
+                        <div className="d-flex align-items-center justify-content-between py-2">
+                            <div className="d-flex align-items-center">
+                                <p className="me-2">dal:</p>
+                                <DatePicker
+                                    excludeDates={bookedDates}
+                                    selected={selectedStartDate}
+                                    onChange={(date) => setSelectedStartDate(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                    minDate={new Date()}
+                                    className="input-date-booking"
+                                />
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <p className="me-2">al:</p>
+                                <DatePicker
+                                    excludeDates={bookedDates}
+                                    selected={selectedEndDate}
+                                    onChange={(date) => setSelectedEndDate(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                    minDate={new Date()}
+                                    className="input-date-booking"
+                                />
+                            </div>
+                        </div>
 
-                                    <div className="py-2">
-                                        <div className="d-flex justify-content-between">
-                                            <p>Prezzo giornaliero:</p>
-                                            <p><strong>{singleObject.prezzoGiornaliero}€</strong></p>
-                                        </div>
-                                        <div className="d-flex justify-content-between">
-                                            <p>Durata prenotazione:</p>
-                                            <p>{durataPrenotazione ? `${durataPrenotazione} ${durataPrenotazione > 1 ? "giorni" : "giorno"}` : " - "}</p>
-                                        </div>
-                                        <div className="d-flex py-2 justify-content-between">
-                                            <p>Costo totale prenotazione:</p>
-                                            <p>{durataPrenotazione ? `${durataPrenotazione * singleObject.prezzoGiornaliero}€` : " - "}</p>
-                                        </div>
-                                    </div>
-                                </form>
-                            )
-                            :
-                            (<p> Oggetto non trovato!</p>)
-                    }
+                        <div className="py-2">
+                            <div className="d-flex justify-content-between">
+                                <p>Prezzo giornaliero:</p>
+                                <p><strong>{singleObject.prezzoGiornaliero}€</strong></p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <p>Durata prenotazione:</p>
+                                <p>{durataPrenotazione ? `${durataPrenotazione} ${durataPrenotazione > 1 ? "giorni" : "giorno"}` : " - "}</p>
+                            </div>
+                            <div className="d-flex py-2 justify-content-between">
+                                <p>Costo totale prenotazione:</p>
+                                <p>{durataPrenotazione ? `${durataPrenotazione * singleObject.prezzoGiornaliero}€` : " - "}</p>
+                            </div>
+                        </div>
+                    </form>
                 </Modal.Body>
                 <Modal.Footer className="border-0">
-                    <button variant="secondary" onClick={handleClose}>Annulla</button>
-                    <button variant="primary" onClick={() => {
+                    <Button variant="secondary" onClick={handleClose}>Annulla</Button>
+                    <Button variant="primary" onClick={() => {
                         createPrenotazione();
                         handleClose();
-                    }}>Conferma Prenotazione</button>
+                    }}>Conferma Prenotazione</Button>
                 </Modal.Footer>
-            </Modal> */}
-                    <Modal show={showModal} onHide={handleClose} backdropClassName="custom-backdrop" centered>
-                        <Modal.Header className="border-0" closeButton>
-                            <Modal.Title>
-                                {singleObject.disponibilita ? <p>Ci sei quasi!</p> : <p>Peccato!</p>}
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <form>
-                                {singleObject.disponibilita ? (
-                                    <>
-                                        <p>Hai scelto <strong>{singleObject.nomeOggetto}</strong> di {singleObject.utente.usernameUtente}!</p>
-                                        <p>Quando ti servirebbe?</p>
-                                    </>
-                                ) : (
-                                    <>
-                                        <p>Hai scelto <strong>{singleObject.nomeOggetto}</strong> di {singleObject.utente.usernameUtente} ma non è al momento disponibile!</p>
-                                        <p>Puoi scegliere una data libera tra queste!</p>
-                                    </>
-                                )}
-
-                                <div className="d-flex align-items-center justify-content-between py-2">
-                                    <div className="d-flex align-items-center">
-                                        <p className="me-2">dal:</p>
-                                        <DatePicker
-                                            excludeDates={bookedDates}
-                                            selected={selectedStartDate}
-                                            onChange={(date) => setSelectedStartDate(date)}
-                                            dateFormat="yyyy-MM-dd"
-                                            minDate={new Date()}
-                                            className="input-date-booking"
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center">
-                                        <p className="me-2">al:</p>
-                                        <DatePicker
-                                            excludeDates={bookedDates}
-                                            selected={selectedEndDate}
-                                            onChange={(date) => setSelectedEndDate(date)}
-                                            dateFormat="yyyy-MM-dd"
-                                            minDate={new Date()}
-                                            className="input-date-booking"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="py-2">
-                                    <div className="d-flex justify-content-between">
-                                        <p>Prezzo giornaliero:</p>
-                                        <p><strong>{singleObject.prezzoGiornaliero}€</strong></p>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <p>Durata prenotazione:</p>
-                                        <p>{durataPrenotazione ? `${durataPrenotazione} ${durataPrenotazione > 1 ? "giorni" : "giorno"}` : " - "}</p>
-                                    </div>
-                                    <div className="d-flex py-2 justify-content-between">
-                                        <p>Costo totale prenotazione:</p>
-                                        <p>{durataPrenotazione ? `${durataPrenotazione * singleObject.prezzoGiornaliero}€` : " - "}</p>
-                                    </div>
-                                </div>
-                            </form>
-                        </Modal.Body>
-                        <Modal.Footer className="border-0">
-                            <Button variant="secondary" onClick={handleClose}>Annulla</Button>
-                            <Button variant="primary" onClick={() => {
-                                createPrenotazione();
-                                handleClose();
-                            }}>Conferma Prenotazione</Button>
-                        </Modal.Footer>
-                    </Modal>
+            </Modal>
         </>
     )
 }

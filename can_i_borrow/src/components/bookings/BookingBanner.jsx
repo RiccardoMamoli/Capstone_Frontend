@@ -3,7 +3,7 @@ import { MdEdit } from "react-icons/md";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBooking, getBookings } from "../../redux/actions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiCircleCheck } from "react-icons/ci";
 
 const BookingBanner = ({ specificObjectBooking }) => {

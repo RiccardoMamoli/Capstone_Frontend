@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import { FaStar } from "react-icons/fa6";
-import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { getPersonalProfile } from "../../redux/actions";
 import { Link, useNavigate } from "react-router-dom";
-import { div } from "framer-motion/client";
 import { IoIosArrowForward } from "react-icons/io";
 
 const UserDetails = ({ token }) => {
@@ -13,8 +10,6 @@ const UserDetails = ({ token }) => {
     const myProfile = useSelector((store) => store.utenti.personalProfile)
     const bookings = useSelector((store) => store.bookings.allBookings)
     const bookingsIn = useSelector((store) => store.bookings.bookingsIn)
-    const [showBook, setShowBook] = useState(false)
-    const [isRead, setIsRead] = useState(false)
     const [notification, setNotification] = useState(0);
     const [books, setBooks] = useState([]);
     const dispatch = useDispatch();
@@ -172,7 +167,7 @@ const UserDetails = ({ token }) => {
                                                                                 <div className={`${i === bookingsIn.length - 1 ? "" : "pb-3"} w-100`}>
                                                                                     <div className="d-flex align-items-center justify-content-between w-100">
                                                                                         <p>
-                                                                                           Hai una nuova prenotazione da <span style={{ fontWeight: "500" }}>{b.utente.usernameUtente}</span>!
+                                                                                            Hai una nuova prenotazione da <span style={{ fontWeight: "500" }}>{b.utente.usernameUtente}</span>!
                                                                                         </p>
                                                                                         <IoIosArrowForward
                                                                                             className={`${showBookIndex === i ? "show-icon-rotate" : ""} show-icon`}
@@ -245,41 +240,6 @@ const UserDetails = ({ token }) => {
                                 </div >
                             </Col >
                         </Row >
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        {/* <Row className="py-3">
-                                <Col>
-                                <Col lg={3} className="d-flex align-items-center justify-content-center">
-                                    <div className="px-1">
-                                        <p style={{ opacity: "0.8" }}> 5 </p>
-                                    </div>
-                                    <div className="icon-star">
-                                        <FaStar />
-                                    </div>
-                                </Col>
-                                    <div className="py-1 d-flex align-items-center justify-content-between" style={{ fontSize: "14px" }}>
-                                        <div>
-                                            <p> Prestiti in scadenza: </p>
-                                        </div>
-                                        <div>
-                                            <FaArrowRightArrowLeft className="order-icon" />
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row> */}
                     </Container >
 
                 )

@@ -32,7 +32,6 @@ const ObjectPage = () => {
     const singleObject = allObjects?.find(oggetto => oggetto.id === parseInt(id))
     const singleFav = favObjects?.find(oggetto => oggetto.id === singleObject.id);
     const sameUserObjects = allObjects.filter(oggetti => oggetti?.utente?.id === singleObject?.utente?.id && oggetti?.id !== parseInt(id))
-    const filtetSameUserObjects = sameUserObjects.fil
 
     const allPersonalBookings = personalProfile?.id
         ? allBookings.filter(booking => booking.utente.id === personalProfile.id)
@@ -120,8 +119,15 @@ const ObjectPage = () => {
         setLiked(!liked);
     };
 
-
-
+    const formatCategory = (c) => {
+        if (c === "ARTICOLI_CASA") {
+            return "ARTICOLI PER LA CASA"
+        } else if (c === "SPORT_TEMPO_LIBERO") {
+            return "SPORT E TEMPO LIBERO"
+        } else {
+            return c
+        }
+    }
 
     return (
         <>
@@ -135,7 +141,7 @@ const ObjectPage = () => {
                                         <div>
                                             <h1> {singleObject?.nomeOggetto}</h1>
                                         </div>
-                                        <div className="like-icon" onClick={() => handleLikeClick(singleObject)}>
+                                        <div className="like-icon d-flex align-items-center" onClick={() => handleLikeClick(singleObject)}>
                                             {
                                                 singleFav ?
                                                     (<FaHeart />)
@@ -161,12 +167,18 @@ const ObjectPage = () => {
                                         </Container>
 
                                     </div>
-                                    <div className="py-2">
-                                        <p style={{ opacity: "0.8" }}> Descrizione: </p>
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <p> {singleObject.descrizioneOggetto}</p>
+                                    <div className="py-2 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div>
+                                                <p style={{ opacity: "0.8" }}> Descrizione: </p>
+                                            </div>
+                                            <div>
+                                                <p> {singleObject.descrizioneOggetto}</p>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex align-items-center">
                                             <div style={{ opacity: "0.6" }}>
-                                                <p> {singleObject?.oggettoCategorie[0]?.categoria?.categoria}</p>
+                                                <p> {formatCategory(singleObject?.oggettoCategorie[0]?.categoria?.categoria)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +220,7 @@ const ObjectPage = () => {
                                 </div>
 
                             </Col>
-                            <Col lg={3} className="p-0 d-flex flex-column justify-content-between">
+                            <Col lg={3} className="p-0 d-flex flex-column justify-content-between py-1">
                                 <div className="details-object p-2">
                                     <Link to={`user/${singleObject.utente.id}`} className="text-decoration-none text-dark">
                                         <div>
@@ -257,7 +269,7 @@ const ObjectPage = () => {
                                                     (
                                                         <Row className="py-2">
                                                             <Col className="p-0 py-2" md={12}>
-                                                                <p style={{opacity: "0.5"}}> L'utente non ha altri oggetti al momento.</p>
+                                                                <p style={{ opacity: "0.5" }}> L'utente non ha altri oggetti al momento.</p>
                                                             </Col>
                                                         </Row>
 

@@ -2,15 +2,12 @@ import { Container } from "react-bootstrap";
 import CustomNavbar from "./CustomNavbar";
 import { useEffect, useState } from "react";
 import { getOggetti, getUtenti } from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import HomepageContent from "./HomepageContent";
 import { Route, Routes } from "react-router-dom";
 import PersonalProfile from "../users/PersonalProfile";
-import RegisterPage from "../tools/RegisterPage";
 import ObjectPage from "../objects/ObjectPage";
-import UserProfile from "../users/UserProfile";
 import FavoritesPage from "../tools/FavoritesPage";
-import ButtonDarkLight from "../tools/ButtonDarkLight";
 import CustomFooter from "./CustomFooter";
 
 const HomePageWindow = ({ progress, setIsLoaded, isLoaded, selectedTheme, setSelectedTheme }) => {
@@ -61,7 +58,6 @@ const HomePageWindow = ({ progress, setIsLoaded, isLoaded, selectedTheme, setSel
                         <Route path="profile" element={<PersonalProfile />} />
                         <Route path="favorites" element={<FavoritesPage />} />
                         <Route path="main/item/:id" element={<ObjectPage />} />
-                        <Route path0="main/user/:id" element={<UserProfile />} />
                     </Routes>
                 </div>
                 <div>

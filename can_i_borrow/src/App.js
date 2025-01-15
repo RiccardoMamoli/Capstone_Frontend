@@ -40,7 +40,6 @@ function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column justify-content-center align-items-center position-relative vh-100">
-        {/* <div className='big-half' /> */}
         <Routes>
           <Route path="/" element={  <AppLoader progress={progress} isLoaded={isLoaded} setIsLoaded={setIsLoaded}/>} />
           <Route path="/homepage/*" element={ <HomePageWindow progress={progress} isLoaded={isLoaded} setIsLoaded={setIsLoaded} selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />} />

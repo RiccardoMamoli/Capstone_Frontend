@@ -6,8 +6,6 @@ import CustomMapbox from "./CustomMapbox";
 import ObjectList from "./ObjectList";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ButtonDarkLight from "../tools/ButtonDarkLight";
-import AnimatedDashboard from "../tools/AnimatedDashboard";
 import ScrollingReview from "../tools/ScrollingReview";
 
 const HomepageContent = ({ selectedTheme, setSelectedTheme, query }) => {

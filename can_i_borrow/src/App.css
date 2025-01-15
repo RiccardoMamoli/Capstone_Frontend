@@ -65,29 +65,6 @@ body {
   height: 100vh !important;
 }
 
-/* .big-half {
-  position: absolute;
-  width: 1500px;
-  height: 1500px !important;
-  border-radius: 100%;
-  left: 50%;
-  bottom: 50%;
-  transform: translate(-50%, 50%);
-  background-color: rgba(239, 148, 11, 0.347);
-} */
-
-.big-half {
-  position: absolute;
-  width: 980px;
-  height: 100vh !important;
-  border-radius: 14%;
-  left: 0%;
-  bottom: 50%;
-  transform: translate(-50%, 50%);
-  background-color: orange;
-}
-
-
 p {
   margin: 0 !important;
 }
